@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Repositories\MenusRepository;
 use Illuminate\Http\Request;
-
+use Menu;
 
 class SiteController extends Controller
 {
@@ -27,16 +27,29 @@ class SiteController extends Controller
 
     protected function renderOutput(){
         $menu=$this->getMenu();
-        dd($menu);
-
-        $navigation=view(env('THEME').'.navigation');
+        $navigation=view(env('THEME').'.navigation')->with('menu',$menu);
         $this->templateVars=['navigation'=>$navigation];
+
         return view($this->template)->with($this->templateVars);
     }
 
     protected function getMenu(){
         $menu=$this->menusRepository->get();
 
-        return $menu;
+        $menuBuilder=Menu::make('MainNav',function ($m)use ($menu){
+            foreach ($menu as $item){
+
+                if($item->parent==null){
+                    $m->add($item->title,$item->path)->id($item->id);
+
+                } else {
+                    if($m->find($item->parent)){
+                        $m->find($item->parent)->add($item->title,$item->path)->id($item->id);
+                    }
+                }
+            }
+        });
+
+        return $menuBuilder;
     }
 }
