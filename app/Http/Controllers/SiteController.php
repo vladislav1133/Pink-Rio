@@ -25,10 +25,10 @@ class SiteController extends Controller
         $this->menusRepository=$menusRepository;
     }
 
-    protected function renderOutput(){
+    public function renderOutput(){
         $menu=$this->getMenu();
         $navigation=view(env('THEME').'.navigation')->with('menu',$menu);
-        $this->templateVars=['navigation'=>$navigation];
+        $this->templateVars=array_add($this->templateVars,'navigation',$navigation);
 
         return view($this->template)->with($this->templateVars);
     }
