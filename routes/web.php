@@ -29,6 +29,11 @@ Route::resource('articles','ArticlesController',[
         'articles'=>'alias'
     ],
 ]);
+
+Route::get('articles/category/{categoryAlias?}',['uses'=>'ArticlesController@index','as'=>'articlesCategory']);
+
+Route::resource('comments','CommentsController',['only'=>['store']]);
+
 Auth::routes();
 
 

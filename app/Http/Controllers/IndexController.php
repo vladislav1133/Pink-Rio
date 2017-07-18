@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Menu;
+use App\Category;
 use App\Repositories\ArticlesRepository;
 use App\Repositories\MenusRepository;
 use App\Repositories\PortfoliosRepository;
@@ -37,8 +38,12 @@ class IndexController extends SiteController
         $articles=$this->getArticles();
         $this->contentRightBar=view(env('THEME').'.indexBar')->with('articles',$articles);
 
-        $this->templateVars=array_add($this->templateVars,'sliders',$sliders);
-        $this->templateVars=array_add($this->templateVars,'content',$content);
+        $this->templateVars['sliders']=$sliders;
+        $this->templateVars['content']=$content;
+
+        $this->keywords='Pink rio';
+        $this->metaDescription='Pink rio';
+        $this->title='Pink rio';
 
         return $this->renderOutput();
     }
@@ -57,7 +62,7 @@ class IndexController extends SiteController
 
     protected function getArticles(){
         $articles=$this->articlesRepository->get(['title','img','created_at','alias'],Config::get('settings.home_arts_count'));
-
+        if($articles)$articles->load('category');
         return $articles;
     }
 

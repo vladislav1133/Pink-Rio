@@ -25,18 +25,22 @@
     <!-- this line will appear only if the website is visited with an iPad -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.2, user-scalable=yes" />
 
-    <title>Pink Rio | A strong, powerful and multiporpose WordPress Theme</title>
+    <meta name="description" content="{{$metaDescription or ''}}">
+    <meta name="keywords" content="{{$keywords or ''}}">
+    <meta name="csrf-token" content="{{csrf_token()}}">
+    <title>{{$title or 'Pink'}}</title>
+
 
     <!-- [favicon] begin -->
     <link rel="shortcut icon" type="image/x-icon" href="{{asset('public')}}/favicon.ico" />
     <link rel="icon" type="image/x-icon" href="{{asset('public')}}/favicon.ico" />
     <!-- Touch icons more info: http://mathiasbynens.be/notes/touch-icons -->
     <!-- For iPad3 with retina display: -->
-    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="{{asset(env('THEME'))}}/apple-touch-icon-144x.png" />
+    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="{{asset('public/'.env('THEME'))}}/apple-touch-icon-144x.png" />
     <!-- For first- and second-generation iPad: -->
-    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="{{asset(env('THEME'))}}/apple-touch-icon-114x.png" />
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="{{asset('public/'.env('THEME'))}}/apple-touch-icon-114x.png" />
     <!-- For first- and second-generation iPad: -->
-    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="{{asset(env('THEME'))}}/apple-touch-icon-72x.png" />
+    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="{{asset('public/'.env('THEME'))}}/apple-touch-icon-72x.png" />
     <!-- For non-Retina iPhone, iPod Touch, and Android 2.1+ devices: -->
     <link rel="apple-touch-icon-precomposed" href="{{asset(env('THEME'))}}/apple-touch-icon-57x.png" />
     <!-- [favicon] end -->
@@ -63,6 +67,7 @@
     <!-- JAVASCRIPTs -->
     <script type="text/javascript" src="{{asset(env('THEME'))}}/js/jquery.js"></script>
     <script type="text/javascript" src="{{asset(env('THEME'))}}/js/myscript.js"></script>
+
     <script type="text/javascript" src="{{asset(env('THEME'))}}/js/comment-reply.js"></script>
     <script type="text/javascript" src="{{asset(env('THEME'))}}/js/jquery.quicksand.js"></script>
     <script type="text/javascript" src="{{asset(env('THEME'))}}/js/jquery.tipsy.js"></script>
@@ -78,11 +83,16 @@
     <script type="text/javascript" src="{{asset(env('THEME'))}}/js/jquery.colorbox-min.js"></script> <!-- nav -->
     <script type="text/javascript" src="{{asset(env('THEME'))}}/js/jquery.tweetable.js"></script>
 
+
+
+
+
+
 </head>
 <!-- END HEAD -->
 
 <!-- START BODY -->
-<body class="no_js responsive page-template-home-php stretched">
+<body class="no_js responsive {{Route::currentRouteName()=='home'?'page-template-home-php':''}} stretched">
 
 <!-- START BG SHADOW -->
 <div class="bg-shadow">
@@ -122,9 +132,11 @@
         <!-- END HEADER -->
 
         <!-- START SLIDER -->
-    @yield('slider')
-    <!-- START PRIMARY -->
-        <div id="primary" class="sidebar-right">
+        @yield('slider')
+
+        <div class="wrap_result"></div>
+        <!-- START PRIMARY -->
+        <div id="primary" class="sidebar-{{isset($bar)?$bar:'no'}}">
             <div class="inner group">
                 <!-- START CONTENT -->
             @yield('content')
@@ -139,29 +151,14 @@
         <!-- END PRIMARY -->
 
         <!-- START COPYRIGHT -->
-        <div id="copyright">
-            <div class="inner group">
-                <div class="left">
-                    <a href="http://yithemes.com/?ddownload=2046&ap_id=pinkrio-html"><strong>Download the free version for Wordpress</strong></a>
-                </div>
-                <div class="right">
-                    <a href="#" class="socials-small facebook-small" title="Facebook">facebook</a>
-                    <a href="#" class="socials-small rss-small" title="Rss">rss</a>
-                    <a href="#" class="socials-small twitter-small" title="Twitter">twitter</a>
-                    <a href="#" class="socials-small flickr-small" title="Flickr">flickr</a>
-                    <a href="#" class="socials-small skype-small" title="Skype">skype</a>
-                    <a href="#" class="socials-small google-small" title="Google">google</a>
-                    <a href="#" class="socials-small pinterest-small" title="Pinterest">pinterest</a>
-                </div>
-            </div>
-        </div>
-        <!-- END COPYRIGHT -->
+    @yield('footer')
+    <!-- END COPYRIGHT -->
     </div>
     <!-- END WRAPPER -->
 </div>
 <!-- END BG SHADOW -->
 
-<script type="text/javascript" src="{{asset(env('THEME'))}}/js/jquery.custom.js"></script>
+<!--<script type="text/javascript" src="/js/jquery.custom.js"></script>-->
 <script type="text/javascript" src="{{asset(env('THEME'))}}/js/contact.js"></script>
 <script type="text/javascript" src="{{asset(env('THEME'))}}/js/jquery.mobilemenu.js"></script>
 

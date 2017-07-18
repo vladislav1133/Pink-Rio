@@ -1,10 +1,5 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: Hero
- * Date: 05.07.2017
- * Time: 9:49
- */
+
 
 namespace App\Repositories;
 use Config;
@@ -13,12 +8,20 @@ abstract class Repository {
 
     protected $model=false;
 
-    public function get($select='*',$take=false){
+    public function get($select='*',$take=false,$pagination=false,$where=false){
         $builder=$this->model->select($select);
 
         if($take){
             $builder->take($take);
         }
+
+        if($where){
+            $builder->where($where[0],$where[1]);
+        }
+        if($pagination){
+            return $this->check($builder->paginate(Config::get('settings.articles_paginate')));
+        }
+
         return $this->check($builder->get());
     }
 
@@ -34,5 +37,12 @@ abstract class Repository {
         });
 
         return $result;
+    }
+
+    protected function one($alias,$relation=false){
+        $result=$this->model->where('alias',$alias)->first();
+
+        return $result;
+
     }
 }
